@@ -1,10 +1,14 @@
 <template>
   <section class="editor_box">
-    <quill-editor class="editor" />
+    <QuillEditor />
   </section>
 </template>
 <script setup>
-import { QuillDetail}
+import ImageUploader from 'quill-image-uploader';
+const modules = {
+  name: 'imageUploader',
+  module: ImageUploader
+};
 </script>
 
 <style scoped></style>
