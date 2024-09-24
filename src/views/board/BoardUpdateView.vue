@@ -7,7 +7,9 @@
       />
       <Editor v-model="boardDetail.data.content" />
       <ButtonComponent :button-tag="'수정'" @click="boardUpdate" />
-      <ButtonComponent :button-tag="'취소'" @click="cancelUpdate" />
+      <RouterLink :to="`/board/detail/${boardDetail.data.boardSid}`"
+        >취소</RouterLink
+      >
     </section>
   </main>
 </template>
@@ -17,12 +19,13 @@ import InputText from '@/components/InputTextComponent.vue';
 import Editor from '@/components/QuillEditor.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { onMounted, getCurrentInstance, reactive } from 'vue';
 
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
-const route = useRouter();
+const route = useRoute();
 const boardDetail = reactive({
   data: {
     boardSid: 0,
@@ -30,11 +33,35 @@ const boardDetail = reactive({
     content: ''
   }
 });
+const cancelUpdate = () => {
+  route.push(`/board/detail/${boardDetail.data.boardSid}`);
+};
+
 const boardUpdate = () => {
-  axios.put('/api/board/update', boardDetail.data).then();
+  axios
+    .put('/api/board/update', boardDetail.data)
+    .then(({ response }) => {
+      if (response.success) {
+        $swalCall({
+          title: '성공',
+          text: response.message,
+          icon: 'success',
+          thenFn: () => {
+            this.$router.push(`/board/detail/${boardDetail.data.boardSid}`);
+          }
+        });
+      }
+    })
+    .catch((error) => {
+      $swalCall({
+        title: '실패',
+        text: error.response.data.message,
+        icon: 'error'
+      });
+    });
 };
 onMounted(() => {
-  const boardSid = route.param.board_sid;
+  const boardSid = route.params.board_sid;
   axios
     .get(`/api/board/detail/${boardSid}`)
     .then(({ response }) => {

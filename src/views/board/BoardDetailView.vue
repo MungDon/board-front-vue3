@@ -31,11 +31,11 @@
 import axios from 'axios';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import { getCurrentInstance, onMounted, reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
-const route = useRouter();
+const route = useRoute();
 
 const boardDetailData = reactive({
   data: {
@@ -48,7 +48,7 @@ const boardDetailData = reactive({
   }
 });
 onMounted(() => {
-  const boardSid = route.param.board_sid;
+  const boardSid = route.params.board_sid;
   axios
     .get(`/api/board/detail/${boardSid}`)
     .then(({ response }) => {
