@@ -25,6 +25,11 @@ const routes = [
     path: '/board/detail/:board_sid',
     name: '게시글 상세',
     component: () => import('@/views/board/BoardDetailView.vue')
+  },
+  {
+    path: '/board/update/:board_sid',
+    name: '게시글 수정',
+    component: () => import('@/views/board/BoardUpdateView.vue')
   }
 ];
 
