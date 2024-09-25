@@ -22,6 +22,7 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { onMounted, getCurrentInstance, reactive } from 'vue';
+import router from '@/router';
 
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
@@ -33,21 +34,18 @@ const boardDetail = reactive({
     content: ''
   }
 });
-const cancelUpdate = () => {
-  this.$router.push(`/board/detail/${boardDetail.data.boardSid}`);
-};
 
 const boardUpdate = () => {
   axios
     .put('/api/board/update', boardDetail.data)
-    .then(({ response }) => {
-      if (response.success) {
+    .then(({ data }) => {
+      if (data.success) {
         $swalCall({
           title: '성공',
-          text: response.message,
+          text: data.message,
           icon: 'success',
           thenFn: () => {
-            this.$router.push(`/board/detail/${boardDetail.data.boardSid}`);
+            router.push(`/board/detail/${boardDetail.data.boardSid}`);
           }
         });
       }
@@ -64,10 +62,10 @@ onMounted(() => {
   const boardSid = route.params.board_sid;
   axios
     .get(`/api/board/detail/${boardSid}`)
-    .then(({ response }) => {
-      if (response.success) {
-        console.log(response.message);
-        boardDetail.data = response.data;
+    .then(({ data }) => {
+      if (data.success) {
+        console.log(data.message);
+        boardDetail.data = data.data;
       }
     })
     .catch((error) => {

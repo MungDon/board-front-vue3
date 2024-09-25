@@ -14,9 +14,8 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import InputText from '@/components/InputTextComponent.vue';
 import axios from 'axios';
 import { reactive, getCurrentInstance } from 'vue';
-import { useRouter } from 'vue-router';
+import router from '@/router';
 
-const route = useRouter();
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
 const boardAddObj = reactive({
@@ -30,14 +29,14 @@ const bindingContent = (value) => {
 const boardAdd = () => {
   axios
     .post('/api/board/add', boardAddObj)
-    .then(({ response }) => {
-      if (response.success) {
+    .then(({ data }) => {
+      if (data.success) {
         $swalCall({
           title: '성공',
-          text: response.message,
+          text: data.message,
           icon: 'success',
           thenFn: () => {
-            route.push('/board/list');
+            router.push('/board/list');
           }
         });
       }

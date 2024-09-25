@@ -21,7 +21,9 @@
       ></article>
     </section>
     <section class="board_detail_button_box">
-      <ButtonComponent :button-tag="'수정'" @click="boardUpdate" />
+      <RouterLink :to="`/board/update/${boardDetailData.data.boardSid}`"
+        >수정</RouterLink
+      >
       <ButtonComponent :button-tag="'삭제'" @click="boardDelete" />
     </section>
   </main>
@@ -31,8 +33,9 @@
 import axios from 'axios';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import { getCurrentInstance, onMounted, reactive } from 'vue';
+import { RouterLink } from 'vue-router';
 import { useRoute } from 'vue-router';
-
+import router from '@/router';
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
 const route = useRoute();
@@ -51,10 +54,10 @@ onMounted(() => {
   const boardSid = route.params.board_sid;
   axios
     .get(`/api/board/detail/${boardSid}`)
-    .then(({ response }) => {
-      if (response.success) {
-        console.log(response.message);
-        boardDetailData.data = response.data;
+    .then(({ data }) => {
+      if (data.success) {
+        console.log(data.message);
+        boardDetailData.data = data.data;
       }
     })
     .catch((error) => {
@@ -76,14 +79,14 @@ const boardDelete = () => {
       if (result.isConfirmed) {
         axios
           .delete(`/api/board/delete/${boardDetailData.data.boardSid}`)
-          .then(({ response }) => {
-            if (response.success) {
+          .then(({ data }) => {
+            if (data.success) {
               $swalCall({
                 title: '성공',
-                text: response.message,
+                text: data.message,
                 icon: 'success',
                 thenFn: () => {
-                  route.push('/board/list');
+                  router.push('/board/list');
                 }
               });
             }
@@ -98,9 +101,6 @@ const boardDelete = () => {
       }
     }
   });
-};
-const boardUpdate = () => {
-  route.push(`/board/update/${boardDetailData.data.boardSid}`);
 };
 </script>
 

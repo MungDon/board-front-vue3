@@ -33,7 +33,7 @@ const memberLoginObj = reactive({
 });
 
 const memberLogin = () => {
-  axios.post('/api/login', memberLoginObj).catch((error) => {
+  axios.post('http://localhost:8080/login', memberLoginObj).catch((error) => {
     $swalCall({
       title: '실패',
       text: error.response.data.message,

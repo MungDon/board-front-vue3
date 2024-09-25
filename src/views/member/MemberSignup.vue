@@ -6,7 +6,7 @@
       </article>
       <article class="member_signup_content_body">
         <InputTextComponent
-          :ex-text="'사용하실 아이디를 입력하세요'"
+          :ex-text="'사용하실 이메일을 입력하세요'"
           v-model="memberAddObj.email"
         /><InputPasswordComponent
           :ex-text="'사용하실 비밀번호를 입력하세요'"
@@ -20,6 +20,7 @@
     </section>
     <section class="member_signup_button_box">
       <ButtonComponent :button-tag="'회원가입'" @click="memberAdd" />
+      <RouterLink :to="`/member/login`">로그인하기</RouterLink>
     </section>
   </main>
 </template>
@@ -29,7 +30,9 @@ import InputTextComponent from '@/components/InputTextComponent.vue';
 import InputPasswordComponent from '@/components/InputPasswordComponent.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
+import router from '@/router';
 import { getCurrentInstance, reactive } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
@@ -43,14 +46,14 @@ const memberAddObj = reactive({
 const memberAdd = () => {
   axios
     .post('/api/member/join', memberAddObj)
-    .then(({ response }) => {
-      if (response.success) {
+    .then(({ data }) => {
+      if (data.success) {
         $swalCall({
           title: '성공',
-          text: response.message,
+          text: data.message,
           icon: 'success',
           thenFn: () => {
-            this.$router.push('/member/login');
+            router.push('/member/login');
           }
         });
       }

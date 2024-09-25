@@ -82,13 +82,13 @@ const changePage = (pageNum) => {
 const fetchBoardList = (pageNum = 0) => {
   axios
     .get('/api/board', { params: { page: pageNum } })
-    .then(({ response }) => {
-      if (response.success) {
-        console.log(response.message);
-        boardListData.currentPage = response.data.currentPage;
-        boardListData.startPage = response.data.startPage;
-        boardListData.endPage = response.data.endPage;
-        boardListData.boardList = response.data.boardList;
+    .then(({ data }) => {
+      if (data.success) {
+        console.log(data.message);
+        boardListData.currentPage = data.data.currentPage;
+        boardListData.startPage = data.data.startPage;
+        boardListData.endPage = data.data.endPage;
+        boardListData.boardList = data.data.boardList;
       }
     })
     .catch((error) => {
