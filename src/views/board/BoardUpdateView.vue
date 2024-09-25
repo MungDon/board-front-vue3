@@ -34,7 +34,7 @@ const boardDetail = reactive({
   }
 });
 const cancelUpdate = () => {
-  route.push(`/board/detail/${boardDetail.data.boardSid}`);
+  this.$router.push(`/board/detail/${boardDetail.data.boardSid}`);
 };
 
 const boardUpdate = () => {
