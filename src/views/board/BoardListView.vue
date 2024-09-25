@@ -1,5 +1,8 @@
 <template>
   <main class="board_list_con">
+    <section class="board_list_button_box">
+      <RouterLink :to="`/board/add`" />
+    </section>
     <section class="board_list_box" v-if="boardListData.boardList.length != 0">
       <article class="board_list_head content">
         <div>No.</div>
