@@ -1,7 +1,7 @@
 <template>
   <main class="board_list_con">
     <section class="board_list_button_box">
-      <RouterLink :to="`/board/add`" />
+      <RouterLink :to="`/board/add`">등록</RouterLink>
     </section>
     <section class="board_list_box" v-if="boardListData.boardList.length != 0">
       <article class="board_list_head content">
@@ -17,7 +17,7 @@
       >
         <div>{{ item.boardSid }}</div>
         <div>
-          <RouterLink :to="`/board/detail/${item.boardSid}}`">{{
+          <RouterLink :to="`/board/detail/${item.boardSid}`">{{
             item.title
           }}</RouterLink>
         </div>
@@ -56,12 +56,11 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, onMounted, reactive } from 'vue';
+import { computed, onMounted, reactive, getCurrentInstance } from 'vue';
 import { RouterLink } from 'vue-router';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
-const { appContext } = getCurrentInstance();
-const $swalCall = appContext.config.globalProperties.$swalCall;
+const { proxy } = getCurrentInstance();
 const boardListData = reactive({
   currentPage: 0,
   startPage: 0,
@@ -81,7 +80,10 @@ const changePage = (pageNum) => {
 };
 const fetchBoardList = (pageNum = 0) => {
   axios
-    .get('/api/board', { params: { page: pageNum } })
+    .get('/api/board', {
+      params: { page: pageNum },
+      withCredentials: true // 쿠키를 포함시키기 위해 추가
+    })
     .then(({ data }) => {
       if (data.success) {
         console.log(data.message);
@@ -92,7 +94,7 @@ const fetchBoardList = (pageNum = 0) => {
       }
     })
     .catch((error) => {
-      $swalCall({
+      proxy.$swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'

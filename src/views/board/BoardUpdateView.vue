@@ -21,11 +21,9 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { RouterLink } from 'vue-router';
-import { onMounted, getCurrentInstance, reactive } from 'vue';
+import { onMounted, reactive, getCurrentInstance } from 'vue';
 import router from '@/router';
-
-const { appContext } = getCurrentInstance();
-const $swalCall = appContext.config.globalProperties.$swalCall;
+const { proxy } = getCurrentInstance();
 const route = useRoute();
 const boardDetail = reactive({
   data: {
@@ -40,7 +38,7 @@ const boardUpdate = () => {
     .put('/api/board/update', boardDetail.data)
     .then(({ data }) => {
       if (data.success) {
-        $swalCall({
+        proxy.$swalCall({
           title: '성공',
           text: data.message,
           icon: 'success',
@@ -51,7 +49,7 @@ const boardUpdate = () => {
       }
     })
     .catch((error) => {
-      $swalCall({
+      proxy.$swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'
@@ -66,10 +64,11 @@ onMounted(() => {
       if (data.success) {
         console.log(data.message);
         boardDetail.data = data.data;
+        console.log(boardDetail.data.content);
       }
     })
     .catch((error) => {
-      $swalCall({
+      proxy.$swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'

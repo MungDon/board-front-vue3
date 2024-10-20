@@ -15,9 +15,7 @@ import InputText from '@/components/InputTextComponent.vue';
 import axios from 'axios';
 import { reactive, getCurrentInstance } from 'vue';
 import router from '@/router';
-
-const { appContext } = getCurrentInstance();
-const $swalCall = appContext.config.globalProperties.$swalCall;
+const { proxy } = getCurrentInstance();
 const boardAddObj = reactive({
   title: '',
   content: ''
@@ -27,22 +25,23 @@ const bindingContent = (value) => {
 };
 
 const boardAdd = () => {
+  console.log('Sending data:', boardAddObj); // 요청 보내기 전에 로그로 출력
   axios
-    .post('/api/board/add', boardAddObj)
+    .post('/api/board/add', boardAddObj, { withCredentials: true })
     .then(({ data }) => {
       if (data.success) {
-        $swalCall({
+        proxy.$swalCall({
           title: '성공',
           text: data.message,
           icon: 'success',
           thenFn: () => {
-            router.push('/board/list');
+            router.push('/board');
           }
         });
       }
     })
     .catch((error) => {
-      $swalCall({
+      proxy.$swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'

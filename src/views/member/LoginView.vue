@@ -24,6 +24,7 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
 import { RouterLink } from 'vue-router';
 import { reactive, getCurrentInstance } from 'vue';
+import router from '@/router';
 
 const { appContext } = getCurrentInstance();
 const $swalCall = appContext.config.globalProperties.$swalCall;
@@ -33,13 +34,26 @@ const memberLoginObj = reactive({
 });
 
 const memberLogin = () => {
-  axios.post('http://localhost:8080/login', memberLoginObj).catch((error) => {
-    $swalCall({
-      title: '실패',
-      text: error.response.data.message,
-      icon: 'error'
+  axios
+    .post('http://localhost:8080/login', memberLoginObj, {
+      withCredentials: true
+    })
+    .then(({ data }) => {
+      if (data.success) {
+        console.log(data.message);
+        // 쿠키 설정을 기다린 후 페이지 이동
+        setTimeout(() => {
+          router.push('/board');
+        }, 100); // 100ms 대기
+      }
+    })
+    .catch((error) => {
+      $swalCall({
+        title: '실패',
+        text: error.response.data.message,
+        icon: 'error'
+      });
     });
-  });
 };
 </script>
 
