@@ -8,8 +8,8 @@
       <Editor v-model="boardDetail.data.content" />
       <ButtonComponent :button-tag="'수정'" @click="boardUpdate" />
       <RouterLink :to="`/board/detail/${boardDetail.data.boardSid}`"
-        >취소</RouterLink
-      >
+        >취소
+      </RouterLink>
     </section>
   </main>
 </template>
@@ -23,6 +23,7 @@ import { useRoute } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { onMounted, reactive, inject } from 'vue';
 import router from '@/router';
+
 const swalCall = inject('$swalCall');
 const route = useRoute();
 const boardDetail = reactive({
