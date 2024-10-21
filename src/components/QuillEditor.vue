@@ -2,7 +2,7 @@
   <QuillEditor
     :modules="modules"
     toolbar="minimal"
-    :content="props.modelValue"
+    :value="props.modelValue"
     @update:content="updateContent"
   />
 </template>
@@ -11,13 +11,13 @@ import ImageUploader from 'quill-image-uploader';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import { ref } from 'vue';
 
-const content = ref('');
 const props = defineProps({
   modelValue: {
     type: String,
     default: ''
   }
 });
+const content = ref('');
 const emit = defineEmits(['update:value']);
 
 const updateContent = (currentContent) => {
