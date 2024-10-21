@@ -21,39 +21,18 @@
 import InputTextComponent from '@/components/InputTextComponent.vue';
 import InputPasswordComponent from '@/components/InputPasswordComponent.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
-import axios from 'axios';
 import { RouterLink } from 'vue-router';
-import { reactive, getCurrentInstance } from 'vue';
-import router from '@/router';
+import { reactive } from 'vue';
+import { useStore } from 'vuex'; // Vuex 스토어 사용을 위한 import
+const store = useStore(); // Vuex 스토어에 접근
 
-const { appContext } = getCurrentInstance();
-const $swalCall = appContext.config.globalProperties.$swalCall;
 const memberLoginObj = reactive({
   email: '',
   password: ''
 });
 
 const memberLogin = () => {
-  axios
-    .post('http://localhost:8080/login', memberLoginObj, {
-      withCredentials: true
-    })
-    .then(({ data }) => {
-      if (data.success) {
-        console.log(data.message);
-        // 쿠키 설정을 기다린 후 페이지 이동
-        setTimeout(() => {
-          router.push('/board');
-        }, 100); // 100ms 대기
-      }
-    })
-    .catch((error) => {
-      $swalCall({
-        title: '실패',
-        text: error.response.data.message,
-        icon: 'error'
-      });
-    });
+  store.dispatch('login', memberLoginObj);
 };
 </script>
 

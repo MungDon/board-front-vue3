@@ -3,10 +3,16 @@
     <div class="header_box">
       <ul class="menu">
         <li>
-          <RouterLink to="/member/login">로그인</RouterLink>
-        </li>
-        <li>
-          <button type="button" @click="logout">로그아웃</button>
+          <ButtonComponent
+            v-if="!isLogin"
+            :button-tag="'로그인'"
+            @click="loginLink"
+          />
+          <ButtonComponent
+            v-if="isLogin"
+            :button-tag="'로그아웃'"
+            @click="logout"
+          />
         </li>
       </ul>
     </div>
@@ -14,16 +20,18 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
-import axios from 'axios';
+import ButtonComponent from '@/components/ButtonComponent.vue';
+import { useStore } from 'vuex';
+import router from '@/router';
+import { computed } from 'vue';
+const store = useStore();
+
+const isLogin = computed(() => store.getters.isLogin);
 const logout = () => {
-  axios
-    .post('/api/member/logout', {
-      withCredentials: true
-    })
-    .catch(() => {
-      alert('로그아웃실패');
-    });
+  store.dispatch('logout');
+};
+const loginLink = () => {
+  router.push('/member/login');
 };
 </script>
 
