@@ -84,7 +84,7 @@ const boardDelete = () => {
                 text: data.message,
                 icon: 'success',
                 thenFn: () => {
-                  router.push('/board/list');
+                  router.push('/board');
                 }
               });
             }
