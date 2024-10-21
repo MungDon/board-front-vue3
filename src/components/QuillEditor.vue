@@ -2,7 +2,7 @@
   <QuillEditor
     :modules="modules"
     toolbar="minimal"
-    :value="props.modelValue"
+    :content="props.modelValue"
     @update:content="updateContent"
   />
 </template>

@@ -5,7 +5,7 @@
         v-model="boardDetail.data.title"
         :ex-text="'제목을 입력하세요'"
       />
-      <Editor v-model="boardDetail.data.content" />
+      <Editor v-model:content="boardDetail.data.content" />
       <ButtonComponent :button-tag="'수정'" @click="boardUpdate" />
       <RouterLink :to="`/board/detail/${boardDetail.data.boardSid}`"
         >취소
