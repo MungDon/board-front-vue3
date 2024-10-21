@@ -12,7 +12,7 @@ const defaultThenFn = () => {
   return;
 };
 
-app.config.globalProperties.$swalCall = (swalObj) => {
+const swalCall = (swalObj) => {
   Swal.fire({
     title: swalObj.title,
     html: swalObj.text,
@@ -31,4 +31,5 @@ app.config.globalProperties.$swalCall = (swalObj) => {
 app.component('QuillEditor', QuillEditor); // Quill 에디터를 전역 컴포넌트로 등록
 app.use(router);
 app.use(store);
+app.provide('$swalCall', swalCall);
 app.mount('#app');

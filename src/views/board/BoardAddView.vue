@@ -13,9 +13,9 @@ import Editor from '@/components/QuillEditor.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import InputText from '@/components/InputTextComponent.vue';
 import axios from 'axios';
-import { reactive, getCurrentInstance } from 'vue';
+import { reactive, inject } from 'vue';
 import router from '@/router';
-const { proxy } = getCurrentInstance();
+const swalCall = inject('$swalCall');
 const boardAddObj = reactive({
   title: '',
   content: ''
@@ -30,7 +30,7 @@ const boardAdd = () => {
     .post('/api/board/add', boardAddObj, { withCredentials: true })
     .then(({ data }) => {
       if (data.success) {
-        proxy.$swalCall({
+        swalCall({
           title: '성공',
           text: data.message,
           icon: 'success',
@@ -41,7 +41,7 @@ const boardAdd = () => {
       }
     })
     .catch((error) => {
-      proxy.$swalCall({
+      swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'

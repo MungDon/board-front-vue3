@@ -56,11 +56,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, getCurrentInstance } from 'vue';
+import { computed, onMounted, reactive, inject } from 'vue';
 import { RouterLink } from 'vue-router';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
-const { proxy } = getCurrentInstance();
+const swalCall = inject('$swalCall');
 const boardListData = reactive({
   currentPage: 0,
   startPage: 0,
@@ -94,7 +94,7 @@ const fetchBoardList = (pageNum = 0) => {
       }
     })
     .catch((error) => {
-      proxy.$swalCall({
+      swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'

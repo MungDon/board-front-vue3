@@ -32,12 +32,12 @@
 <script setup>
 import axios from 'axios';
 import ButtonComponent from '@/components/ButtonComponent.vue';
-import { onMounted, reactive, getCurrentInstance } from 'vue';
+import { onMounted, reactive, inject } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 const route = useRoute();
-const { proxy } = getCurrentInstance();
+const swalCall = inject('$swalCall');
 const boardDetailData = reactive({
   data: {
     boardSid: 0,
@@ -59,7 +59,7 @@ onMounted(() => {
       }
     })
     .catch((error) => {
-      proxy.$swalCall({
+      swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'
@@ -67,7 +67,7 @@ onMounted(() => {
     });
 });
 const boardDelete = () => {
-  proxy.$swalCall({
+  swalCall({
     title: '게시글 삭제',
     text: '해당 게시글을 삭제 하시겠습니까?',
     icon: 'question',
@@ -79,7 +79,7 @@ const boardDelete = () => {
           .delete(`/api/board/delete/${boardDetailData.data.boardSid}`)
           .then(({ data }) => {
             if (data.success) {
-              proxy.$swalCall({
+              swalCall({
                 title: '성공',
                 text: data.message,
                 icon: 'success',
@@ -90,7 +90,7 @@ const boardDelete = () => {
             }
           })
           .catch((error) => {
-            proxy.$swalCall({
+            swalCall({
               title: '실패',
               text: error.response.data.message,
               icon: 'error'

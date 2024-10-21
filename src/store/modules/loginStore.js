@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { getCurrentInstance } from 'vue';
-const proxy = getCurrentInstance();
+import router from '@/router';
 const loginStore = {
   state: {
     userInfo: null,
@@ -21,9 +20,11 @@ const loginStore = {
     }
   },
   actions: {
-    login(dispatch, loginObj) {
+    login({ commit }, { loginObj, swalCall }) {
       axios
-        .post('http://localhost:8080/login', loginObj)
+        .post('http://localhost:8080/login', loginObj, {
+          withCredentials: true
+        })
         .then((res) => {
           const email = res.data.email;
           const role = res.data.role;
@@ -33,30 +34,44 @@ const loginStore = {
           };
           localStorage.setItem('email', email);
           localStorage.setItem('role', role);
-          this.commit('loginSuccess', userInfo);
+          commit('loginSuccess', userInfo);
+          router.push('/board');
         })
         .catch((error) => {
-          proxy.$swalCall({
+          swalCall({
             title: '실패',
             text: error.response.data.message,
             icon: 'error'
           });
         });
     },
-    logout() {
+    logout({ commit }, { swalCall }) {
       // 로그아웃 actions
       axios
         .post('/api/member/logout', {
           withCredentials: true
         })
+        .then((response) => {
+          // 성공 시 commit과 함께 메시지 출력
+          commit('logout');
+          const thenFn = () => {
+            router.push('/member/login'); // 로그아웃 후 리다이렉션
+          };
+          swalCall({
+            title: '성공',
+            text: response.data.message, // 서버에서 보낸 메시지
+            icon: 'success',
+            thenFn: thenFn()
+          });
+        })
         .catch((error) => {
-          proxy.$swalCall({
+          swalCall({
             title: '실패',
             text: error.response.data.message,
             icon: 'error'
           });
         });
-      this.commit('logout');
+      commit('logout');
     }
   },
   getters: {

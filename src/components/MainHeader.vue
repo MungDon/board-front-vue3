@@ -23,12 +23,14 @@
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import { useStore } from 'vuex';
 import router from '@/router';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 const store = useStore();
-
+const swalCall = inject('$swalCall');
 const isLogin = computed(() => store.getters.isLogin);
 const logout = () => {
-  store.dispatch('logout');
+  store.dispatch('logout', {
+    swalCall: swalCall
+  });
 };
 const loginLink = () => {
   router.push('/member/login');
