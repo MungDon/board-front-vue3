@@ -2,8 +2,9 @@
   <QuillEditor
     :modules="modules"
     toolbar="minimal"
-    :value="props.modelValue"
+    :content="props.modelValue"
     @update:content="updateContent"
+    :contentType="'html'"
   />
 </template>
 <script setup>

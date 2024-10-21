@@ -2,7 +2,7 @@
   <main class="board_add_main">
     <section class="board_add_box">
       <InputText v-model="boardAddObj.title" :ex-text="'제목을 입력하세요'" />
-      <Editor @update:value="bindingContent" />
+      <Editor @update:content="bindingContent" />
       <ButtonComponent :button-tag="'등록'" @click="boardAdd" />
     </section>
   </main>

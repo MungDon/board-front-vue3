@@ -7,7 +7,7 @@
       />
       <Editor
         v-model="boardDetail.data.content"
-        @update:value="bindingContent"
+        @update:content="bindingContent"
       />
       <ButtonComponent :button-tag="'수정'" @click="boardUpdate" />
       <RouterLink :to="`/board/detail/${boardDetail.data.boardSid}`"
