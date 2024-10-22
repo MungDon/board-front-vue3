@@ -31,11 +31,8 @@ import InputPasswordComponent from '@/components/InputPasswordComponent.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
 import router from '@/router';
-import { getCurrentInstance, reactive } from 'vue';
+import { inject, reactive } from 'vue';
 import { RouterLink } from 'vue-router';
-
-const { appContext } = getCurrentInstance();
-const $swalCall = appContext.config.globalProperties.$swalCall;
 
 const memberAddObj = reactive({
   email: '',
@@ -43,12 +40,14 @@ const memberAddObj = reactive({
   name: ''
 });
 
+const swalCall = inject('$swalCall');
+
 const memberAdd = () => {
   axios
     .post('/api/member/join', memberAddObj)
     .then(({ data }) => {
       if (data.success) {
-        $swalCall({
+        swalCall({
           title: '성공',
           text: data.message,
           icon: 'success',
@@ -59,7 +58,7 @@ const memberAdd = () => {
       }
     })
     .catch((error) => {
-      $swalCall({
+      swalCall({
         title: '실패',
         text: error.response.data.message,
         icon: 'error'

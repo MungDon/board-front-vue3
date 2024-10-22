@@ -15,7 +15,9 @@ import InputText from '@/components/InputTextComponent.vue';
 import axios from 'axios';
 import { reactive, inject } from 'vue';
 import router from '@/router';
+
 const swalCall = inject('$swalCall');
+
 const boardAddObj = reactive({
   title: '',
   content: ''

@@ -60,13 +60,16 @@ import { computed, onMounted, reactive, inject } from 'vue';
 import { RouterLink } from 'vue-router';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import axios from 'axios';
+
 const swalCall = inject('$swalCall');
+
 const boardListData = reactive({
   currentPage: 0,
   startPage: 0,
   endPage: 0,
   boardList: []
 });
+
 const totalPages = computed(() => {
   const pages = [];
   for (let i = boardListData.startPage; i <= boardListData.endPage; i++) {
@@ -74,10 +77,12 @@ const totalPages = computed(() => {
   }
   return pages;
 });
+
 const changePage = (pageNum) => {
   if (pageNum < 1 || pageNum > boardListData.endPage) return; // 유효한 페이지 범위 체크
   fetchBoardList(pageNum - 1); // 0부터 시작하는 페이지 번호에 맞게 -1
 };
+
 const fetchBoardList = (pageNum = 0) => {
   axios
     .get('/api/board', {
@@ -101,6 +106,7 @@ const fetchBoardList = (pageNum = 0) => {
       });
     });
 };
+
 onMounted(() => {
   fetchBoardList();
 });

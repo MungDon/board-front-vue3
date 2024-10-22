@@ -24,8 +24,10 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import { RouterLink } from 'vue-router';
 import { reactive, inject } from 'vue';
 import { useStore } from 'vuex'; // Vuex 스토어 사용을 위한 import
+
 const swalCall = inject('$swalCall');
 const store = useStore(); // Vuex 스토어에 접근
+
 const memberLoginObj = reactive({
   email: '',
   password: ''

@@ -36,8 +36,10 @@ import { onMounted, reactive, inject } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useRoute } from 'vue-router';
 import router from '@/router';
+
 const route = useRoute();
 const swalCall = inject('$swalCall');
+
 const boardDetailData = reactive({
   data: {
     boardSid: 0,
@@ -48,6 +50,7 @@ const boardDetailData = reactive({
     modifiedDate: null
   }
 });
+
 onMounted(() => {
   const boardSid = route.params.board_sid;
   axios
@@ -66,6 +69,7 @@ onMounted(() => {
       });
     });
 });
+
 const boardDelete = () => {
   swalCall({
     title: '게시글 삭제',
